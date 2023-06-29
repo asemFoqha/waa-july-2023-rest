@@ -5,44 +5,38 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class CourseRepo {
-    List<Course> courses = new ArrayList<>(List.of(new Course[]{
-            new Course("asem"),
-            new Course("asem 2"),
-    }));
+    private List<Course> courses = new ArrayList<>();
+
+    public CourseRepo() {
+        initializeDummyCourses();
+    }
+
+    private void initializeDummyCourses() {
+        courses.add(new Course(generateRandomId(), "Math", "MATH101"));
+        courses.add(new Course(generateRandomId(), "Physics", "PHYS202"));
+        courses.add(new Course(generateRandomId(), "English", "ENG101"));
+        courses.add(new Course(generateRandomId(), "History", "HIST201"));
+        courses.add(new Course(generateRandomId(), "Geography", "GEOG301"));
+        courses.add(new Course(generateRandomId(), "Computer Science", "CS101"));
+    }
 
     public List<Course> findAllCourses() {
         return courses;
     }
 
-    public Course getCourseById(int id) {
-        Course course = null;
-        for (Course c : courses) {
-            if (c.getId() == id) {
-                return c;
-            }
-        }
-        return null;
-    }
-
-    public boolean createCourse(Course courseToAdd) {
+    public void createCourse(Course courseToAdd) {
         courses.add(courseToAdd);
-        return true;
     }
 
-    public List<Course> updateCourse(int id, Course updatedCourse) {
-        return courses;
+    public boolean deleteCourse(Course course) {
+        return courses.remove(course);
     }
 
-    public List<Course> deleteCourse() {
-        return courses;
+    private static long generateRandomId() {
+        return Math.abs(UUID.randomUUID().getMostSignificantBits());
     }
-
-
-    public Course getStudentsByMajor(String major){
-        return new Course("test");
-    }
-
 }
